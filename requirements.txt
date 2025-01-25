@@ -1,0 +1,9 @@
+flask
+flask-cors
+fastai
+flask_sqlalchemy
+joblib
+pandas
+werkzeug
+gunicorn
+timm

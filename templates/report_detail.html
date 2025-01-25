@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Detail - Smart Crop Management</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">
+                    <i class="fas fa-file-alt me-2"></i>
+                    Report Details
+                    <small class="float-end">
+                        {{ report.timestamp.strftime('%Y-%m-%d %H:%M') }}
+                    </small>
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <!-- Soil Parameters Section -->
+                    <div class="col-md-6">
+                        <h4 class="mb-3">
+                            <i class="fas fa-vial me-2"></i>
+                            Soil Parameters
+                        </h4>
+                        <div class="list-group">
+                            {% if report.nitrogen is not none %}
+                            <div class="list-group-item">
+                                <strong>Nitrogen:</strong> {{ "%.2f"|format(report.nitrogen) }}
+                            </div>
+                            {% endif %}
+                            
+                            {% if report.phosphorus is not none %}
+                            <div class="list-group-item">
+                                <strong>Phosphorus:</strong> {{ "%.2f"|format(report.phosphorus) }}
+                            </div>
+                            {% endif %}
+                            
+                            {% if report.potassium is not none %}
+                            <div class="list-group-item">
+                                <strong>Potassium:</strong> {{ "%.2f"|format(report.potassium) }}
+                            </div>
+                            {% endif %}
+                            
+                            {% if report.temperature is not none %}
+                            <div class="list-group-item">
+                                <strong>Temperature:</strong> {{ "%.1f"|format(report.temperature) }}°C
+                            </div>
+                            {% endif %}
+                            
+                            {% if report.humidity is not none %}
+                            <div class="list-group-item">
+                                <strong>Humidity:</strong> {{ "%.1f"|format(report.humidity) }}%
+                            </div>
+                            {% endif %}
+                            
+                            {% if report.ph is not none %}
+                            <div class="list-group-item">
+                                <strong>pH:</strong> {{ "%.2f"|format(report.ph) }}
+                            </div>
+                            {% endif %}
+                            
+                            {% if report.rainfall is not none %}
+                            <div class="list-group-item">
+                                <strong>Rainfall:</strong> {{ "%.1f"|format(report.rainfall) }} mm
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Analysis Results Section -->
+                    <div class="col-md-6">
+                        <h4 class="mb-3">
+                            <i class="fas fa-chart-bar me-2"></i>
+                            Analysis Results
+                        </h4>
+                        
+                        {% if report.predicted_crop %}
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="fas fa-seedling me-2"></i>
+                                    Crop Prediction
+                                </h5>
+                                <p class="card-text">
+                                    {{ report.predicted_crop }}
+                                    {% if report.crop_confidence %}
+                                    <span class="badge bg-success">{{ "%.1f"|format(report.crop_confidence) }}% confidence</span>
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        {% if report.predicted_disease %}
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="fas fa-virus me-2"></i>
+                                    Disease Detection
+                                </h5>
+                                <p class="card-text">
+                                    {{ report.predicted_disease }}
+                                    {% if report.disease_confidence %}
+                                    <span class="badge bg-danger">{{ "%.1f"|format(report.disease_confidence) }}% confidence</span>
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        {% if report.predicted_deficiency %}
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="fas fa-leaf me-2"></i>
+                                    Nutrient Deficiency
+                                </h5>
+                                <p class="card-text">
+                                    {{ report.predicted_deficiency }}
+                                    {% if report.deficiency_confidence %}
+                                    <span class="badge bg-warning">{{ "%.1f"|format(report.deficiency_confidence) }}% confidence</span>
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        {% if report.fertilizer_recommendation %}
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="fas fa-flask me-2"></i>
+                                    Fertilizer Recommendation
+                                </h5>
+                                <p class="card-text">{{ report.fertilizer_recommendation }}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                {% if report.image_path %}
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <h4>
+                            <i class="fas fa-image me-2"></i>
+                            Uploaded Image
+                        </h4>
+                        <img src="{{ url_for('static', filename=report.image_path) }}" 
+                             class="img-fluid rounded" 
+                             alt="Analyzed plant image">
+
+
+                             
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="text-center mt-4 mb-4">
+            <a href="{{ url_for('view_reports') }}" class="btn btn-primary">
+                <i class="fas fa-arrow-left me-2"></i>
+                Back to Reports
+            </a>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

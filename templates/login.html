@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMART CROP MANAGEMENT SYSTEM - Login</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green: #2E7D32;
+            --light-green: #4CAF50;
+            --hover-green: #1B5E20;
+            --bg-light-green: #E8F5E9;
+        }
+        body {
+            background-color: var(--bg-light-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 30px;
+            max-width: 450px;
+        }
+        .form-label {
+            color: var(--primary-green);
+            font-weight: 500;
+        }
+        .btn-primary {
+            background-color: var(--primary-green) !important;
+            border-color: var(--primary-green) !important;
+        }
+        .btn-primary:hover {
+            background-color: var(--hover-green) !important;
+        }
+        .form-control:focus {
+            border-color: var(--light-green);
+            box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25);
+        }
+        .signup-link {
+            color: var(--primary-green);
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container text-center">
+        <h2 class="mb-4"><i class="fas fa-leaf text-success me-2"></i>SMART CROP MANAGEMENT SYSTEM Login</h2>
+        {% if error %}
+        <div class="error-message text-center">{{ error }}</div>
+        {% endif %}
+        <form method="POST" action="{{ url_for('login') }}">
+            <div class="mb-3">
+                <label for="username" class="form-label"><i class="fas fa-user me-2"></i>Username</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label"><i class="fas fa-lock me-2"></i>Password</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100"><i class="fas fa-sign-in-alt me-2"></i>Login</button>
+        </form>
+        <div class="text-center mt-3">Don't have an account? <a href="{{ url_for('signup') }}" class="signup-link">Sign Up</a></div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

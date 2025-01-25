@@ -1,0 +1,265 @@
+<!-- how_to_use.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Use - Smart Crop Management</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+:root {
+    --primary-green: #2E7D32; /* Main theme color */
+    --light-green: #4CAF50;   /* Light variant of the primary green */
+    --hover-green: #1B5E20;   /* Darker green for hover effects */
+    --bg-light-green: #E8F5E9; /* Light background color for the body */
+    --inactive-bg: #f8f9fa;   /* Background color for inactive tabs */
+    --inactive-hover: #e2e6ea; /* Background color for inactive hover */
+}
+
+body {
+    background-color: var(--bg-light-green) !important;
+}
+
+.navbar {
+    background-color: var(--primary-green) !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    color: white !important;
+    font-weight: 600;
+    padding: 5px 10px;
+    border-radius: 30px; /* Rounded brand background */
+}
+
+.nav-tabs .nav-link {
+    color: var(--primary-green);
+    background-color:darkgoldenrod; /* Light gray background for inactive buttons */
+    border: none;
+    padding: 1rem 2rem;
+    font-weight: 500;
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition for background and text color */
+    border-radius: 5px; /* Rounded corners for buttons */
+}
+
+.nav-tabs .nav-link:hover {
+    background-color:#80d683 ; /* Slightly darker gray on hover */
+    color: var(--primary-green); /* Keep text color consistent on hover */
+}
+
+.nav-tabs .nav-link.active {
+    color: white;
+    background-color: var(--primary-green); /* Green background for active button */
+    border: none;
+}
+
+.tab-content {
+    background: white;
+    border-radius: 0 0 10px 10px;
+    padding: 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.guide-image {
+    max-width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 1rem 0;
+}
+
+.guide-text {
+    margin: 1.5rem 0;
+    line-height: 1.6;
+}
+
+.step-number {
+    background-color: var(--primary-green);
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+}
+
+.step-title {
+    color: var(--primary-green);
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.active {
+    font-weight: 600;
+}
+
+.nav-link {
+    position: relative;
+    color: #fff !important;
+    font-weight: 500;
+    text-decoration: none;
+margin: 4px;
+
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 0;
+    height: 2px;
+    background-color: #fff;
+    transition: width 0.3s;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark" style="border-radius: 5px;">
+        <div class="container">
+            <a class="navbar-brand hehe" href="#" style="background-color: red; padding: 5px;">
+                <i class="fas fa-leaf me-2"></i>
+               SMART CROP MANAGEMENT SYSTEM
+            </a>
+            <a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        {% if 'user_id' in session %}
+                        <li class="nav-item">
+                            <span class="nav-link">Welcome, {{ session['username'] }}</span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('logout') }}">
+                                <i class="fas fa-sign-out-alt me-1"></i> Logout
+                            </a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('login') }}">
+                                <i class="fas fa-sign-in-alt me-1"></i> Login
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('signup') }}">
+                                <i class="fas fa-user-plus me-1"></i> Signup
+                            </a>
+                        </li>
+                        {% endif %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('about') }}">
+                                <i class="fas fa-users me-1"></i> About
+                            </a>
+                        <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+                    </li>
+                    
+                    </ul>
+                </div>
+            </a>
+         
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Navbar remains the same as your index.html -->
+
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0"><i class="fas fa-book-reader me-2"></i>How to Use Guide</h3>
+            </div>
+            <div class="card-body">
+                <ul class="nav nav-tabs" id="guideTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="soil-tab" data-bs-toggle="tab" data-bs-target="#soil" type="button" role="tab">
+                            <i class="fas fa-seedling me-2"></i>Soil Prediction
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="disease-tab" data-bs-toggle="tab" data-bs-target="#disease" type="button" role="tab">
+                            <i class="fas fa-bug me-2"></i>Disease Prediction
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab">
+                            <i class="fas fa-list-check me-2"></i>All Predictions
+                        </button>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="guideTabContent">
+                    <!-- Soil Prediction Tab -->
+                    <div class="tab-pane fade show active" id="soil" role="tabpanel">
+                        <div class="guide-text">
+                            <div class="step-title">
+                                <span class="step-number">1</span>
+                                Enter Soil Parameters
+                            </div>
+                            <p>Input your soil's nitrogen (N), phosphorus (P), potassium (K), and other environmental parameters in the respective fields.</p>
+                            <img src="/static/Soil P{rediction.webp" alt="Soil Prediction Guide" class="guide-image">
+                            
+                            <div class="step-title">
+                                <span class="step-number">2</span>
+                                Get Predictions
+                            </div>
+                            <p>Click the "Predict Soil" button to receive crop recommendations and nutrient deficiency analysis based on your input parameters.</p>
+                        </div>
+                    </div>
+
+                    <!-- Disease Prediction Tab -->
+                    <div class="tab-pane fade" id="disease" role="tabpanel">
+                        <div class="guide-text">
+                            <div class="step-title">
+                                <span class="step-number">1</span>
+                                Upload Leaf Image
+                            </div>
+                            <p>Click on the upload area to select and upload a clear image of the plant leaf you want to analyze.</p>
+                            <img src="/static/Disease pred.webp" alt="Disease Prediction Guide" class="guide-image">
+                            
+                            <div class="step-title">
+                                <span class="step-number">2</span>
+                                Analyze Disease
+                            </div>
+                            <p>Click the "Predict Image" button to get an analysis of any diseases present in the leaf image.</p>
+                        </div>
+                    </div>
+
+                    <!-- All Predictions Tab -->
+                    <div class="tab-pane fade" id="all" role="tabpanel">
+                        <div class="guide-text">
+                            <div class="step-title">
+                                <span class="step-number">1</span>
+                                Complete All Inputs
+                            </div>
+                            <p>Fill in all soil parameters AND upload a leaf image for comprehensive analysis.</p>
+                            <img src="/static/HYBrid.webp" alt="All Predictions Guide" class="guide-image">
+                            
+                            <div class="step-title">
+                                <span class="step-number">2</span>
+                                Get Complete Analysis
+                            </div>
+                            <p>Click the "Predict Hybrid" button to receive a complete analysis including crop recommendations, disease detection, and nutrient deficiencies.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

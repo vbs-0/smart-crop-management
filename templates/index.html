@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart management system</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green: #2E7D32;
+            --light-green: #4CAF50;
+            --hover-green: #1B5E20;
+            --bg-light-green: #E8F5E9;
+        }
+
+        body {
+            background-color: var(--bg-light-green) !important;
+        }
+
+        .navbar {
+            background-color: var(--primary-green) !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background-color: var(--primary-green) !important;
+            color: white !important;
+            border-bottom: none;
+        }
+
+        .prediction-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
+        }
+
+        .prediction-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .custom-file-upload {
+            border: 2px dashed var(--light-green);
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .custom-file-upload:hover {
+            background-color: var(--bg-light-green);
+            border-color: var(--primary-green);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-green) !important;
+            border-color: var(--primary-green) !important;
+            color: white !important;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--hover-green) !important;
+            border-color: var(--hover-green) !important;
+        }
+
+        .btn-success {
+            background-color: var(--light-green) !important;
+            border-color: var(--light-green) !important;
+        }
+
+        .btn-success:hover {
+            background-color: var(--primary-green) !important;
+            border-color: var(--primary-green) !important;
+        }
+
+        .form-label {
+            color: var(--primary-green);
+            font-weight: 500;
+        }
+
+        .form-control:focus {
+            border-color: var(--light-green);
+            box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25);
+        }
+
+        .progress {
+            height: 10px;
+            border-radius: 5px;
+            background-color: #e0e0e0;
+        }
+
+        .progress-bar {
+            transition: width 0.5s ease-in-out;
+        }
+
+        #image-preview {
+            max-width: 200px;
+            max-height: 200px;
+            margin: 10px auto;
+            display: none;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .result-section {
+            display: none;
+        }
+
+        /* Custom backgrounds for result cards */
+        #crop-result .card {
+            background-color: #E8F5E9;
+        }
+
+        #disease-result .card {
+            background-color: #FFEBEE;
+        }
+
+        #deficiency-result .card {
+            background-color: #FFF3E0;
+        }
+
+        #fertilizer-result .card {
+            background-color: #E1F5FE;
+        }
+
+        /* Enhanced card titles */
+        .card-title {
+            font-weight: 600;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(0,0,0,0.1);
+        }
+
+        /* Button group styling */
+        .btn {
+            padding: 12px 24px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .btn:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        /* Form input enhancements */
+        .form-control {
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            transition: all 0.3s;
+        }
+
+        .form-control:hover {
+            border-color: var(--light-green);
+        }
+        .col-md-4 {
+            margin: 3px auto;
+        }
+        .hehe {
+            background-color: red; padding: 5px; border-radius: 30px;
+        }
+
+
+        .nav-link {
+    position: relative;
+    color: #fff !important;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 0;
+    height: 2px;
+    background-color: #fff;
+    transition: width 0.3s;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+    </style>
+</head>
+<!-- Rest of the HTML remains the same as in the previous version -->
+<body>
+    <!-- Previous HTML content goes here (unchanged) -->
+    <!-- All the content from <nav> to the closing </body> tag remains exactly the same -->
+        <nav class="navbar navbar-expand-lg navbar-dark" style="border-radius: 5px;">
+            <div class="container">
+                <a class="navbar-brand hehe" href="#" style="background-color: red; padding: 5px;">
+                    <i class="fas fa-leaf me-2"></i>
+                   SMART CROP MANAGEMENT SYSTEM
+                </a>
+                <a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto">
+                            {% if 'user_id' in session %}
+                            <li class="nav-item">
+                                <span class="nav-link">Welcome, {{ session['username'] }}</span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('logout') }}">
+                                    <i class="fas fa-sign-out-alt me-1"></i> Logout
+                                </a>
+                            </li>
+                            {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('login') }}">
+                                    <i class="fas fa-sign-in-alt me-1"></i> Login
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('signup') }}">
+                                    <i class="fas fa-user-plus me-1"></i> Signup
+                                </a>
+                            </li>
+                            {% endif %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('about') }}">
+                                    <i class="fas fa-users me-1"></i> About
+                                </a>
+                            </li>
+
+<!--this is partial testing--> <li class="nav-item">
+    <a class="nav-link" href="{{ url_for('view_reports') }}">
+        <i class="fas fa-history me-1"></i> Reports
+    </a>
+</li>
+ <!-- Add this inside your navbar's ul element, where the other nav links are -->
+<li class="nav-item">
+    <a class="nav-link" href="{{ url_for('how_to_use') }}">
+        <i class="fas fa-book-reader me-1"></i> How to Use
+    </a>
+</li>
+                        </ul>
+                    </div>
+                </a>
+  
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <h4 class="mb-0"><i class="fas fa-diagnoses me-2"></i>Crop Analysis & Prediction System</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="prediction-form">
+                            <div class="row g-3">
+                                <!-- Soil Parameters -->
+                                <div class="col-md-3">
+                                    <label class="form-label">
+                                        <i class="fas fa-flask me-1"></i>
+                                        Nitrogen (N)
+                                    </label>
+                                    <input type="number" class="form-control" name="N" required min="0" max="140">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">
+                                        <i class="fas fa-flask me-1"></i>
+                                        Phosphorus (P)
+                                    </label>
+                                    <input type="number" class="form-control" name="P" required min="0" max="145">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">
+                                        <i class="fas fa-flask me-1"></i>
+                                        Potassium (K)
+                                    </label>
+                                    <input type="number" class="form-control" name="K" required min="0" max="205">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">
+                                        <i class="fas fa-temperature-high me-1"></i>
+                                        Temperature (°C)
+                                    </label>
+                                    <input type="number" class="form-control" name="temperature" required min="0" max="50">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">
+                                        <i class="fas fa-tint me-1"></i>
+                                        Humidity (%)
+                                    </label>
+                                    <input type="number" class="form-control" name="humidity" required min="0" max="100">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">
+                                        <i class="fas fa-vial me-1"></i>
+                                        pH
+                                    </label>
+                                    <input type="number" class="form-control" name="ph" required min="0" max="14" step="0.1">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">
+                                        <i class="fas fa-cloud-rain me-1"></i>
+                                        Rainfall (mm)
+                                    </label>
+                                    <input type="number" class="form-control" name="rainfall" required min="0" max="300">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">
+                                        <i class="fas fa-camera me-1"></i>
+                                        Leaf Image
+                                    </label>
+                                    <label class="custom-file-upload d-block">
+                                        <input type="file" name="image" accept="image/*" class="d-none" id="image-input">
+                                        <i class="fas fa-upload mb-2"></i>
+                                        <br>
+                                        Click to Upload
+                                    </label>
+                                    <img id="image-preview" class="img-fluid rounded" alt="Preview">
+                                </div>
+                            </div>
+
+                            <div class="row mt-4">
+                                <div class="col-md-4">
+                                    <button type="button" class="btn btn-primary w-100" onclick="predict('soil')">
+                                        <i class="fas fa-microscope me-2"></i>
+                                        Predict Soil
+                                    </button>
+                                </div>
+                                <br>
+                                
+                                <div class="col-md-4">
+                                    <button type="button" class="btn btn-success w-100" onclick="predict('image')">
+                                        <i class="fas fa-image me-2"></i>
+                                        Predict Image
+                                    </button>
+                                </div>
+                                <div class="col-md-4">
+                                    <button type="button" class="btn btn-info w-100" onclick="predict('hybrid')">
+                                        <i class="fas fa-brain me-2"></i>
+                                        Predict Hybrid
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <!-- Results Section -->
+                        <div id="results" class="mt-4">
+                            <!-- Crop Prediction -->
+                            <div class="result-section" id="crop-result">
+                                <div class="card prediction-card mb-3">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-success">
+                                            <i class="fas fa-seedling me-2"></i>
+                                            Crop Prediction
+                                        </h5>
+                                        <div class="progress mb-3">
+                                            <div class="progress-bar bg-success" id="crop-confidence" role="progressbar"></div>
+                                        </div>
+                                        <p class="mb-0" id="crop-text"></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Disease Prediction -->
+                            <div class="result-section" id="disease-result">
+                                <div class="card prediction-card mb-3">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-danger">
+                                            <i class="fas fa-bug me-2"></i>
+                                            Disease Detection
+                                        </h5>
+                                        <div class="progress mb-3">
+                                            <div class="progress-bar bg-danger" id="disease-confidence" role="progressbar"></div>
+                                        </div>
+                                        <p class="mb-0" id="disease-text"></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Deficiency Prediction -->
+                            <div class="result-section" id="deficiency-result">
+                                <div class="card prediction-card mb-3">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-warning">
+                                            <i class="fas fa-exclamation-triangle me-2"></i>
+                                            Nutrient Deficiency
+                                        </h5>
+                                        <div class="progress mb-3">
+                                            <div class="progress-bar bg-warning" id="deficiency-confidence" role="progressbar"></div>
+                                        </div>
+                                        <p class="mb-0" id="deficiency-text"></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Fertilizer Recommendation -->
+                            <div class="result-section" id="fertilizer-result">
+                                <div class="card prediction-card">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-info">
+                                            <i class="fas fa-flask me-2"></i>
+                                            Fertilizer Recommendation
+                                        </h5>
+                                        <p class="mb-0" id="fertilizer-text"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Previous JavaScript content remains the same
+        // Image preview functionality
+        document.getElementById('image-input').addEventListener('change', function(e) {
+            const preview = document.getElementById('image-preview');
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Prediction function
+        function predict(type) {
+            const form = document.getElementById('prediction-form');
+            const formData = new FormData(form);
+
+            // Hide all result sections initially
+            document.querySelectorAll('.result-section').forEach(section => {
+                section.style.display = 'none';
+            });
+
+            // Show loading state
+            const loadingToast = new bootstrap.Toast(document.createElement('div'));
+            
+            fetch(`/predict_${type}`, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+
+                // Update results based on prediction type
+               // Update results based on prediction type
+                if (data.crop) {
+                    document.getElementById('crop-result').style.display = 'block';
+                    document.getElementById('crop-text').textContent = `Recommended Crop: ${data.crop}`;
+                    document.getElementById('crop-confidence').style.width = `${data.crop_confidence}%`;
+                    document.getElementById('crop-confidence').setAttribute('aria-valuenow', data.crop_confidence);
+                }
+
+                if (data.predicted_deficiency) {
+                    document.getElementById('deficiency-result').style.display = 'block';
+                    document.getElementById('deficiency-text').textContent = `Detected Deficiency: ${data.predicted_deficiency}`;
+                    document.getElementById('deficiency-confidence').style.width = `${data.deficiency_confidence}%`;
+                    document.getElementById('deficiency-confidence').setAttribute('aria-valuenow', data.deficiency_confidence);
+                }
+
+                if (data.disease_class) {
+                    document.getElementById('disease-result').style.display = 'block';
+                    document.getElementById('disease-text').textContent = `Detected Disease: ${data.disease_class}`;
+                    document.getElementById('disease-confidence').style.width = `${data.disease_confidence}%`;
+                    document.getElementById('disease-confidence').setAttribute('aria-valuenow', data.disease_confidence);
+                }
+
+                if (data.fertilizer_recommendation) {
+                    document.getElementById('fertilizer-result').style.display = 'block';
+                    document.getElementById('fertilizer-text').textContent = data.fertilizer_recommendation;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('PLease enter the data and click PREDICT.');
+            })
+            .finally(() => {
+                // Re-enable buttons if needed
+                document.querySelectorAll('button').forEach(button => button.disabled = false);
+            });
+        }
+
+        // Form validation
+        document.querySelectorAll('input[type="number"]').forEach(input => {
+            input.addEventListener('input', function() {
+                const min = parseFloat(this.min);
+                const max = parseFloat(this.max);
+                let value = parseFloat(this.value);
+                
+                if (value < min) this.value = min;
+                if (value > max) this.value = max;
+            });
+        });
+    </script>
+</body>
+</html>

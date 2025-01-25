@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - Smart Crop Management</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .report-card {
+            transition: transform 0.2s;
+        }
+        .report-card:hover {
+            transform: translateY(-5px);
+        }
+        .pagination-container {
+            margin-top: 2rem;
+        }
+
+
+        :root {
+            --primary-green: #2E7D32;
+            --light-green: #4CAF50;
+            --hover-green: #1B5E20;
+            --bg-light-green: #E8F5E9;
+        }
+
+        body {
+            background-color: var(--bg-light-green) !important;
+        }
+
+        .navbar {
+            background-color: var(--primary-green) !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background-color: var(--primary-green) !important;
+            color: white !important;
+            border-bottom: none;
+        }
+
+        .prediction-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
+        }
+
+        .prediction-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .custom-file-upload {
+            border: 2px dashed var(--light-green);
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .custom-file-upload:hover {
+            background-color: var(--bg-light-green);
+            border-color: var(--primary-green);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-green) !important;
+            border-color: var(--primary-green) !important;
+            color: white !important;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--hover-green) !important;
+            border-color: var(--hover-green) !important;
+        }
+
+        .btn-success {
+            background-color: var(--light-green) !important;
+            border-color: var(--light-green) !important;
+        }
+
+        .btn-success:hover {
+            background-color: var(--primary-green) !important;
+            border-color: var(--primary-green) !important;
+        }
+
+        .form-label {
+            color: var(--primary-green);
+            font-weight: 500;
+        }
+
+        .form-control:focus {
+            border-color: var(--light-green);
+            box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25);
+        }
+
+        .progress {
+            height: 10px;
+            border-radius: 5px;
+            background-color: #e0e0e0;
+        }
+
+        .progress-bar {
+            transition: width 0.5s ease-in-out;
+        }
+
+        #image-preview {
+            max-width: 200px;
+            max-height: 200px;
+            margin: 10px auto;
+            display: none;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .result-section {
+            display: none;
+        }
+
+        /* Custom backgrounds for result cards */
+        #crop-result .card {
+            background-color: #E8F5E9;
+        }
+
+        #disease-result .card {
+            background-color: #FFEBEE;
+        }
+
+        #deficiency-result .card {
+            background-color: #FFF3E0;
+        }
+
+        #fertilizer-result .card {
+            background-color: #E1F5FE;
+        }
+
+        /* Enhanced card titles */
+        .card-title {
+            font-weight: 600;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(0,0,0,0.1);
+        }
+
+        /* Button group styling */
+        .btn {
+            padding: 12px 24px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .btn:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        /* Form input enhancements */
+        .form-control {
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            transition: all 0.3s;
+        }
+
+        .form-control:hover {
+            border-color: var(--light-green);
+        }
+        .col-md-4 {
+            margin: 3px auto;
+        }
+        .hehe {
+            background-color: red; padding: 5px; border-radius: 30px;
+        }
+
+
+        .nav-link {
+    position: relative;
+    color: #fff !important;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 0;
+    height: 2px;
+    background-color: #fff;
+    transition: width 0.3s;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+    </style>
+</head>
+<body>
+
+
+    <!--this is all about nav -->
+
+
+    
+
+    <nav class="navbar navbar-expand-lg navbar-dark" style="border-radius: 5px;">
+        <div class="container">
+            <a class="navbar-brand hehe" href="#" style="background-color: red; padding: 5px;">
+                <i class="fas fa-leaf me-2"></i>
+               SMART CROP MANAGEMENT SYSTEM
+            </a>
+            <a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        {% if 'user_id' in session %}
+                        <li class="nav-item">
+                            <span class="nav-link">Welcome, {{ session['username'] }}</span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+                        </li>
+
+                        
+                        
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('logout') }}">
+                                <i class="fas fa-sign-out-alt me-1"></i> Logout
+                            </a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('login') }}">
+                                <i class="fas fa-sign-in-alt me-1"></i> Login
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('signup') }}">
+                                <i class="fas fa-user-plus me-1"></i> Signup
+                            </a>
+                        </li>
+                        {% endif %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('about') }}">
+                                <i class="fas fa-users me-1"></i> About
+                            </a>
+                       
+<!-- Add this inside your navbar's ul element, where the other nav links are -->
+<li class="nav-item">
+<a class="nav-link" href="{{ url_for('how_to_use') }}">
+    <i class="fas fa-book-reader me-1"></i> How to Use
+</a>
+</li>
+                    </ul>
+                </div>
+            </a>
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h2 class="mb-4">
+            <i class="fas fa-history me-2"></i>
+            Your Analysis Reports
+        </h2>
+        
+        <div class="row">
+            {% if reports.items %}
+                {% for report in reports.items %}
+                <div class="col-md-6 mb-4">
+                    <div class="card report-card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-calendar me-2"></i>
+                                {{ report.timestamp.strftime('%Y-%m-%d %H:%M') }}
+                            </h5>
+                            <div class="card-text">
+                                {% if report.predicted_crop %}
+                                    <p><strong>Predicted Crop:</strong> {{ report.predicted_crop }}</p>
+                                {% endif %}
+                                {% if report.predicted_disease %}
+                                    <p><strong>Disease Detection:</strong> {{ report.predicted_disease }}</p>
+                                {% endif %}
+                                {% if report.predicted_deficiency %}
+                                    <p><strong>Deficiency:</strong> {{ report.predicted_deficiency }}</p>
+                                {% endif %}
+                            </div>
+                            <a href="{{ url_for('view_report', report_id=report.id) }}" class="btn btn-primary mt-2">
+                                <i class="fas fa-eye me-1"></i>
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        No reports found. Start by analyzing your crop data!
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        {% if reports.items %}
+            <div class="pagination-container d-flex justify-content-center">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        {% if reports.has_prev %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ url_for('view_reports', page=reports.prev_num) }}">Previous</a>
+                            </li>
+                        {% endif %}
+                        
+                        {% for page_num in reports.iter_pages() %}
+                            {% if page_num %}
+                                <li class="page-item {% if page_num == reports.page %}active{% endif %}">
+                                    <a class="page-link" href="{{ url_for('view_reports', page=page_num) }}">{{ page_num }}</a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled"><span class="page-link">...</span></li>
+                            {% endif %}
+                        {% endfor %}
+                        
+                        {% if reports.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ url_for('view_reports', page=reports.next_num) }}">Next</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        {% endif %}
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
